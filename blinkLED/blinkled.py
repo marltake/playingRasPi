@@ -33,7 +33,7 @@ def parse_pattern(all_port,pattern_str):
         for c in p:
             idx=ord(c.upper())-ord('A')
             if idx<len(all_port):
-                pat_01.apend(1 if c.isupper() else 0)
+                pat_01.append(1 if c.isupper() else 0)
                 ports.append(all_port[idx])
     return ports,pat_01,count
 
