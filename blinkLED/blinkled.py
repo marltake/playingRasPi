@@ -1,5 +1,6 @@
 #
 # vim:fenc=utf-8:ff=unix:ts=4:sw=4:sts=4:et:
+import RPi.GPIO as GPIO
 import sys
 import time
 
@@ -50,13 +51,20 @@ def gen_patterns(files):
 
 if __name__=='__main__':
     all_port=(5,7,11,13)
-    #ToDo INIT-OUT all_port
-    # run patterns
+    #INIT-OUT all_port
+    GPIO.setwarnings(False)
+    GPIO.setmode(GPIO.BOARD)
+    for p in all_port:
+        GPIO.setup(p,GPIO.OUT)
+    #run patterns
     for pat_str in gen_patterns(sys.argv[1:]):
+        print(pat_str)
         port,pattern,n=parse_pattern(all_port,pat_str)
-        print(port,pattern,n)
         for pn,on in zip(port,pattern):
-            #ToDo setOUT(pn,on/off)
+            GPIO.output(pn,GPIO.HIGH if on==1 else GPIO.LOW)
             pass
         time.sleep(0.01*n)
-    #ToDo CLOSE-IN all_port
+    #CLOSE-IN all_port
+    for pn in all_port:
+        GPIO.output(pn,GPIO.LOW)
+        GPIO.setup(pn,GPIO.IN)
