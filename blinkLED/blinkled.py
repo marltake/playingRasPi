@@ -43,7 +43,10 @@ def gen_patterns(files):
     for f in files:
         with open(f) as fn:
             for l in fn:
-                yield l.strip()
+                l=l.strip()
+                if l[0]=="#":
+                    continue
+                yield l
 
 if __name__=='__main__':
     all_port=(5,7,11,13)
