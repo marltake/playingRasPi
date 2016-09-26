@@ -1,5 +1,7 @@
 #
 # vim:fenc=utf-8:ff=unix:ts=4:sw=4:sts=4:et:
+import sys
+import time
 
 def parse_pattern(all_port,pattern_str):
     '''parse a config line in pattern text file
@@ -26,16 +28,28 @@ def parse_pattern(all_port,pattern_str):
         else:
             pat_01=[1 if c=='1' else 0 for c in p[:len(all_port)]]
     else:
-        pat_01=[1 if c.isupper() else 0 for c in p]
-        ports=[all_port[ord(c)-ord('A')] for c in p.upper()]
+        ports_idx=[ord(c)-ord('A') for c in p.upper()]
+        pat_01=[1 if c.isupper() else 0 for c,i in zip(p,ports_idx) if i<len(all_port)]
+        ports=[all_port[i] for i in ports_idx if i<len(all_port)]
     return ports,pat_01,count
+
+def gen_patterns(files):
+    if len(files)==0:
+        files=["pattern.txt"]
+    for f in files:
+        with open(f) as fn:
+            for l in fn:
+                yield l.strip()
+
 if __name__=='__main__':
-    #DEBUG
-    all_port=(3,5,7,11,13)
-    for pat_str in '''AbEdC
-        Z
-        z
-        10100
-        ACedb 30'''.split("\n"):
-        print(pat_str.strip())
-        print(parse_pattern(all_port,pat_str))
+    all_port=(5,7,11,13)
+    #ToDo INIT-OUT all_port
+    # run patterns
+    for pat_str in gen_patterns(sys.argv[1:]):
+        port,pattern,n=parse_pattern(all_port,pat_str)
+        print(port,pattern,n)
+        for pn,on in zip(port,pattern):
+            #ToDo setOUT(pn,on/off)
+            pass
+        time.sleep(0.01*n)
+    #ToDo CLOSE-IN all_port
