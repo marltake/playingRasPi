@@ -1,5 +1,24 @@
-AbEdC
-Z
-z
-10100
-ACedb 30
+#
+# vim:guifont=IPAゴシック\ 24:
+Z 30
+z 30
+Z 30
+z 30
+Z 30
+z 30
+A
+B
+C
+D
+a
+b
+c
+d
+D
+C
+B
+A
+d
+c
+b
+a
