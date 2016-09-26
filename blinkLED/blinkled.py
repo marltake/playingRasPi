@@ -28,9 +28,13 @@ def parse_pattern(all_port,pattern_str):
         else:
             pat_01=[1 if c=='1' else 0 for c in p[:len(all_port)]]
     else:
-        ports_idx=[ord(c)-ord('A') for c in p.upper()]
-        pat_01=[1 if c.isupper() else 0 for c,i in zip(p,ports_idx) if i<len(all_port)]
-        ports=[all_port[i] for i in ports_idx if i<len(all_port)]
+        pat_01=[]
+        ports=[]
+        for c in p:
+            idx=ord(c.upper())-ord('A')
+            if idx<len(all_port):
+                pat_01.apend(1 if c.isupper() else 0)
+                ports.append(all_port[idx])
     return ports,pat_01,count
 
 def gen_patterns(files):
