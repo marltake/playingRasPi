@@ -50,10 +50,10 @@ def gen_patterns(files):
                 yield l
 
 if __name__=='__main__':
-    all_port=(5,7,11,13)
+    all_port=(3,4,17,27)
     #INIT-OUT all_port
     GPIO.setwarnings(False)
-    GPIO.setmode(GPIO.BOARD)
+    GPIO.setmode(GPIO.BCM)
     for p in all_port:
         GPIO.setup(p,GPIO.OUT)
     #run patterns
