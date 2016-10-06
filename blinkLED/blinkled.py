@@ -65,6 +65,4 @@ if __name__=='__main__':
             pass
         time.sleep(0.01*n)
     #CLOSE-IN all_port
-    for pn in all_port:
-        GPIO.output(pn,GPIO.LOW)
-        GPIO.setup(pn,GPIO.IN)
+    GPIO.cleanup()
