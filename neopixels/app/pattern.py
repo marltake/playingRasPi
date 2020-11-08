@@ -65,4 +65,7 @@ def black_cross():
         d[59 - i] = 0
         yield d
 
-generators = [stream, wave, ping_pong, in_out, spring, go_back, black_ping_pong, black_cross]
+
+def get_generator(pattern_index):
+    generators = [stream, wave, ping_pong, in_out, spring, go_back, black_ping_pong, black_cross]
+    return generators[pattern_index % len(generators)]
