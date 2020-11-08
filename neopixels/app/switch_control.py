@@ -40,8 +40,12 @@ def run():
     index_input = IndexInput(pi)
     proc = None
     pattern_index = None
+    last_edge = 0
     while True:
         if pi.wait_for_edge(4, pigpio.FALLING_EDGE):
+            if time.time() < last_edge + 1:
+                continue
+            last_edge = time.time()
             next_index = index_input.index
             if proc is not None:
                 os.kill(proc.pid, signal.SIGINT)
