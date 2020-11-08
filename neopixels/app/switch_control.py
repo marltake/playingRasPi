@@ -35,13 +35,13 @@ def _start(pattern_index):
 def run():
     # http://abyz.me.uk/rpi/pigpio/python.html#wait_for_edge
     pi = pigpio.pi()
-    pi.set_mode(14, pigpio.INPUT)
-    pi.set_pull_up_down(14, pigpio.PUD_DOWN)
+    pi.set_mode(4, pigpio.INPUT)
+    pi.set_pull_up_down(4, pigpio.PUD_DOWN)
     index_input = IndexInput(pi)
     proc = None
     pattern_index = None
     while True:
-        if pi.wait_for_edge(14, pigpio.FALLING_EDGE, 1.0):
+        if pi.wait_for_edge(4, pigpio.FALLING_EDGE):
             next_index = index_input.index
             if proc is not None:
                 os.kill(proc.pid, signal.SIGINT)
