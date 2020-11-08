@@ -1,18 +1,16 @@
-import multiprocessing
-import os
-import signal
-import time
-from . import pattern, neo_pixel
+import click
+from . import pattern, neo_pixel, switch_control
 
-
-def main():
-    pattern_index = 2
+@click.command()
+@click.option("-p", "--pattern-index", type=int)
+def main(pattern_index):
+    if pattern_index is None:
+        switch_control.run()
+        return
+    pattern_index %= len(pattern.generators)
     generator = pattern.generators[pattern_index]
     print(generator)
-    proc = multiprocessing.Process(target=neo_pixel.run, args=(generator,))
-    proc.start()
-    time.sleep(4)
-    os.kill(proc.pid, signal.SIGINT)
+    neo_pixel.run(generator)
 
 
 if __name__ == "__main__":
