@@ -8,13 +8,20 @@ from . import pattern, neo_pixel
 
 
 class IndexInput:
-    def __init__(self):
-        # config input
-        pass
+    def __init__(self, pi):
+        self.__pi = pi
+        self.__pins = (27, 18, 17)
+        for pin in self.__pins:
+            pi.set_mode(pin, pigpio.INPUT)
+            pi.set_pull_up_down(pin, pigpio.PUD_DOWN)
 
     @property
     def index(self):
-        return 1
+        index = 0
+        for pin in self.__pins:
+            index *= 2
+            index += self.__pi.read(pin)
+        return index
 
 
 def _start(pattern_index):
@@ -30,7 +37,7 @@ def run():
     pi = pigpio.pi()
     pi.set_mode(14, pigpio.INPUT)
     pi.set_pull_up_down(14, pigpio.PUD_DOWN)
-    index_input = IndexInput()
+    index_input = IndexInput(pi)
     proc = None
     pattern_index = None
     while True:
