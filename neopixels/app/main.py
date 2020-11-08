@@ -7,8 +7,7 @@ def main(pattern_index):
     if pattern_index is None:
         switch_control.run()
         return
-    pattern_index %= len(pattern.generators)
-    generator = pattern.generators[pattern_index]
+    generator = pattern.get_generator(pattern_index)
     print(generator)
     neo_pixel.run(generator)
 
