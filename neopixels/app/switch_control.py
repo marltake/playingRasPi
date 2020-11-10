@@ -5,12 +5,13 @@ import time
 import datetime
 import pigpio
 from . import pattern, neo_pixel
+from .config import Settings
 
 
 class IndexInput:
     def __init__(self, pi):
         self.__pi = pi
-        self.__pins = (27, 18, 17)
+        self.__pins = Settings.in_pattern
         for pin in self.__pins:
             pi.set_mode(pin, pigpio.INPUT)
             pi.set_pull_up_down(pin, pigpio.PUD_DOWN)
@@ -35,14 +36,15 @@ def _start(pattern_index):
 def run():
     # http://abyz.me.uk/rpi/pigpio/python.html#wait_for_edge
     pi = pigpio.pi()
-    pi.set_mode(4, pigpio.INPUT)
-    pi.set_pull_up_down(4, pigpio.PUD_DOWN)
+    trigger = Settings.trigger
+    pi.set_mode(trigger, pigpio.INPUT)
+    pi.set_pull_up_down(trigger, pigpio.PUD_DOWN)
     index_input = IndexInput(pi)
     proc = None
     pattern_index = None
     last_edge = 0
     while True:
-        if pi.wait_for_edge(4, pigpio.FALLING_EDGE):
+        if pi.wait_for_edge(trigger, pigpio.FALLING_EDGE):
             if time.time() < last_edge + 1:
                 continue
             last_edge = time.time()

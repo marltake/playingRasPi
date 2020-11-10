@@ -9,6 +9,7 @@ import time
 import pigpio
 import copy
 
+from .config import Settings
 
 class NeoPixel:
     def __init__(self, pi, n, channel=0, aux=0):
@@ -62,12 +63,12 @@ class NeoPixel:
         self.__pi.spi_write(self.__h, self.__buf[:(i+1)*24])
         time.sleep(100e-6)
 
-def run(generator, interval=0.03):
+def run(generator, interval=0.05):
     pi = pigpio.pi()
     if not pi.connected:
         exit()
     time.sleep(0.7)  # wait for enabling drive signal
-    num_pixels = 60
+    num_pixels = Settings.length
     pixels = NeoPixel(pi, n=num_pixels)
     try:
         while True:
